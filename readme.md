@@ -1,6 +1,6 @@
 # Ami Code Pari Na
 
-## [Demo](https://choosealicense.com/licenses/mit/)
+## [Demo](https://amicodeparina.iamkoushik.com/)
 
 ## Software Used:
 - Pycharm 2021.2 (Professional Edition)
