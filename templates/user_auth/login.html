@@ -1,0 +1,59 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login-Ami Code Pari Na</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<section class="text-blueGray-700 h-full ">
+    <div class="container h-full flex items-center justify-center items-center px-5 py-12 m-auto lg:px-20">
+        <form method="post"
+              class="flex flex-col w-full p-10 mx-auto my-6 transition duration-500 ease-in-out transform bg-white border rounded-lg lg:w-2/6 md:w-1/2 md:mt-0"
+              action="">
+            {% csrf_token %}
+            <div class="relative text-center">
+                <h1 class="text-3xl mb-3">Login</h1>
+            </div>
+            {% if form.errors %}
+                <div class="relative p-2 mt-4 text-white bg-red-500">
+                    Bad credentials.
+                </div>
+            {% endif %}
+            <div class="relative mt-4">
+                <label for="name" class="text-base leading-7 text-blueGray-500">Name</label>
+                {{ form.username }}
+            </div>
+            <div class="relative mt-4">
+                <label for="name" class="text-base leading-7 text-blueGray-500">Name</label>
+                {{ form.password }}
+            </div>
+            <div class="flex my-6">
+                <label class="flex items-center">
+                    <input type="checkbox" class="form-checkbox ">
+                    <span class="ml-2 text-blueGray-500">Subscribe me </span>
+                </label>
+            </div>
+            <button class="w-full px-16 py-2 my-2 mr-2 text-base text-white transition duration-500 ease-in-out transform bg-blue-600 border-blue-600 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blue-800 ">
+                Button
+            </button>
+            <div class="flex my-6">
+                Don't have an account? <a class="text-blue-400" href="{% url 'Register' %}">Create Account</a>
+            </div>
+
+        </form>
+
+    </div>
+</section>
+
+</body>
+</html>

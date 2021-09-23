@@ -1,0 +1,134 @@
+{% extends 'user_auth/base.html' %}
+
+{% block title %} Khoj the search{% endblock %}
+{% block content %}
+
+    <section class="text-blueGray-700 ">
+        <div class="container flex flex-col px-5 py-8 mx-auto lg:items-center">
+            <div class="flex flex-col w-full mb-8 text-left lg:text-center">
+                <h2 class="mb-4 text-xs font-semibold tracking-widest text-black uppercase title-font">Ami code pari
+                    na</h2>
+                <h1 class="mx-auto mb-6 text-2xl font-semibold leading-none tracking-tighter text-black lg:w-1/2 sm:text-6xl title-font">
+                    Khoj the search
+                </h1>
+                <div class="mx-auto text-base font-medium leading-relaxed text-blue-400 lg:w-2/3">
+                    <h2 class="text-xl">Instruction:</h2>
+                    <ul>
+                        <li>You can input comma separated Number, Character or String</li>
+                        <li>In the search box you can search from your given Input</li>
+                    </ul>
+                </div>
+                <div class="flex items-start w-full mt-12 lg:mx-auto lg:justify-center lg:w-1/2">
+                    <div class="relative w-2/4 mr-4 text-left lg:w-full xl:w-1/2 md:w-full">
+                        <label for="input" class="text-base text-xl leading-7 text-blueGray-500"> Input Value</label>
+                        <input type="text" id="input" name="hero-field"
+                               placeholder="Ex: 1,4,23,10,34"
+                                {#                               onchange="handleInput(this)"#}
+                               class="flex-grow w-full px-4 py-2 mb-4 mt-2 mr-4 text-base text-black transition duration-650 ease-in-out transform rounded-lg bg-blue-200 focus:outline-none focus:border-purple-500 sm:mb-0 focus:bg-white focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2">
+                    </div>
+                    <div class="relative w-2/4 mr-4 text-left lg:w-full xl:w-1/2 md:w-full">
+                        <label for="input" class="text-base text-xl leading-7 text-blueGray-500"> Search Value</label>
+                        <input type="text" id="search" name="hero-field"
+                               placeholder="Ex: 10"
+                               class="flex-grow w-full px-4 py-2 mt-2 mb-4 mr-4 text-base text-black transition duration-650 ease-in-out transform rounded-lg bg-blue-200 focus:outline-none focus:border-purple-500 sm:mb-0 focus:bg-white focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2">
+                    </div>
+                </div>
+                <div class="text-2xl mt-4">Result: <span id="result"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full flex justify-center">
+        <a href="{% url 'Logout' %}">
+            <button class="px-16  py-2 my-2 mr-2 text-base text-white transition duration-500 ease-in-out transform bg-blue-600 border-blue-600 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blue-800">
+                Logout
+            </button>
+        </a>
+    </section>
+
+    <script>
+        window.onload = () => {
+            {# inputValue global  for static and dynamic search #}
+            let inputValue = []
+            const input = document.querySelector('#input')
+            const searchInput = document.querySelector('#search')
+            const resultField = document.getElementById("result")
+
+            {#disable Search Field#}
+            if (input.value === "") {
+                searchInput.setAttribute('disabled', "true")
+            }
+
+            {#input field action On change#}
+            input.addEventListener('change', (e) => {
+                searchInput.removeAttribute('disabled')
+                e.target.value.split(',').map(e => {
+                    inputValue.push(e.trim())
+                })
+                {#save to databse#}
+                addInput(e.target.value)
+            })
+
+            {#Static Search#}
+            searchInput.addEventListener('keyup', (e) => {
+                let result = inputValue.indexOf(e.target.value)
+                if (result !== -1) {
+                    resultField.innerText = "ture"
+                } else
+                    resultField.innerText = "false"
+            })
+
+        }
+
+        {#Save input#}
+
+        function addInput(input) {
+            {#get csrftoken from cookie#}
+            const csrftoken = getCookie('csrftoken');
+            fetch('input/', {
+                method: 'post',
+                headers: {
+                    'X-CSRFToken': csrftoken, 'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({input: input})
+            }).then(res => res.json())
+                .then(res => {
+                        if (res.message === 'success') {
+                            Toastify({
+                                text: "Save Successful",
+                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                            }).showToast();
+                        } else {
+                            Toastify({
+                                text: "Something want wrong!",
+                                backgroundColor: "linear-gradient(to right, #bb1414, #f00000)",
+                            }).showToast();
+
+                        }
+                    }
+                )
+            ;
+        }
+
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+
+{% endblock %}
+

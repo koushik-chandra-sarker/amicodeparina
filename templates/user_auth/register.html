@@ -1,0 +1,57 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration-Ami Code Pari Na</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+
+<section class="text-blueGray-700 h-full ">
+    <div class="container items-center h-full mx-auto px-5 py-12 lg:px-20">
+        <form method="post"
+              class="flex flex-col  w-full p-10 mx-auto my-6 transition duration-500 ease-in-out transform bg-white border rounded-lg lg:w-2/6 md:w-1/2 md:mt-0">
+            {% csrf_token %}
+            <div class="relative text-center">
+                <h1 class="text-3xl mb-3">Registration</h1>
+            </div>
+            <div class="relative ">
+                <label for="username" class="text-base leading-7 text-blueGray-500">Username</label>
+                {{ form.username }}
+            </div>
+            {% if form.username.errors %}
+                <div class="relative mt-4 p-2 text-white  bg-red-500">
+                    {{ form.username.errors }}
+                </div>
+            {% endif %}
+            <div class="relative mt-4">
+                <label for="password1" class="text-base leading-7 text-blueGray-500">Password</label>
+                {{ form.password1 }}
+            </div>
+            <div class="relative mt-4">
+                <label for="password2" class="text-base leading-7 text-blueGray-500">Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+
+            {% if form.password2.errors %}
+                <div class="relative mt-4 p-2 text-white bg-red-500">
+                    {{ form.password2.errors }}
+                </div>
+            {% endif %}
+            <div class="inline-flex flex-wrap items-center justify-between ">
+                <button class="w-full px-4 py-2 my-2 font-medium text-blue-600 transition duration-500 ease-in-out transform bg-blue-100 border-blueGray-100 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blue-200 hover:text-blue-900">
+                    Submit
+                </button>
+            </div>
+            <div class="relative mt-4">
+                Already have an account? <a class="text-blue-400" href="{% url 'Login' %}">Login</a>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>
